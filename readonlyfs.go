@@ -36,6 +36,10 @@ func (r *ReadOnlyFs) Name() string {
 	return "ReadOnlyFilter"
 }
 
+func (r *ReadOnlyFs) Close() {
+	r.source.Close()
+}
+
 func (r *ReadOnlyFs) Stat(name string) (os.FileInfo, error) {
 	return r.source.Stat(name)
 }

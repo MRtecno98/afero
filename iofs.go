@@ -1,3 +1,4 @@
+//go:build go1.16
 // +build go1.16
 
 package afero
@@ -185,6 +186,10 @@ func (f FromIOFS) Rename(oldname, newname string) error {
 func (f FromIOFS) Stat(name string) (os.FileInfo, error) { return fs.Stat(f.FS, name) }
 
 func (f FromIOFS) Name() string { return "fromiofs" }
+
+func (f FromIOFS) Close() {
+
+}
 
 func (f FromIOFS) Chmod(name string, mode os.FileMode) error {
 	return notImplemented("chmod", name)

@@ -71,6 +71,10 @@ func (r *RegexpFs) Name() string {
 	return "RegexpFs"
 }
 
+func (r *RegexpFs) Close() {
+	r.source.Close()
+}
+
 func (r *RegexpFs) Stat(name string) (os.FileInfo, error) {
 	if err := r.dirOrMatches(name); err != nil {
 		return nil, err

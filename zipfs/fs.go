@@ -106,6 +106,8 @@ func (fs *Fs) Stat(name string) (os.FileInfo, error) {
 
 func (fs *Fs) Name() string { return "zipfs" }
 
+func (*Fs) Close() {}
+
 func (fs *Fs) Chmod(name string, mode os.FileMode) error { return syscall.EPERM }
 
 func (fs *Fs) Chown(name string, uid, gid int) error { return syscall.EPERM }

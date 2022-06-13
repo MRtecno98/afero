@@ -309,6 +309,11 @@ func (u *CopyOnWriteFs) Name() string {
 	return "CopyOnWriteFs"
 }
 
+func (u *CopyOnWriteFs) Close() {
+	u.base.Close()
+	u.layer.Close()
+}
+
 func (u *CopyOnWriteFs) MkdirAll(name string, perm os.FileMode) error {
 	dir, err := IsDir(u.base, name)
 	if err != nil {

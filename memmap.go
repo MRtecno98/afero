@@ -51,6 +51,8 @@ func (m *MemMapFs) getData() map[string]*mem.FileData {
 
 func (*MemMapFs) Name() string { return "MemMapFS" }
 
+func (*MemMapFs) Close() {}
+
 func (m *MemMapFs) Create(name string) (File, error) {
 	name = normalizePath(name)
 	m.mu.Lock()

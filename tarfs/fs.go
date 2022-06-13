@@ -97,6 +97,7 @@ func (fs *Fs) Open(name string) (afero.File, error) {
 }
 
 func (fs *Fs) Name() string { return "tarfs" }
+func (*Fs) Close()          {}
 
 func (fs *Fs) Create(name string) (afero.File, error) { return nil, syscall.EROFS }
 

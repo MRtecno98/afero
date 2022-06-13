@@ -33,6 +33,8 @@ func NewOsFs() Fs {
 
 func (OsFs) Name() string { return "OsFs" }
 
+func (OsFs) Close() {}
+
 func (OsFs) Create(name string) (File, error) {
 	f, e := os.Create(name)
 	if f == nil {

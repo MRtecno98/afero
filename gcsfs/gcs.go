@@ -76,6 +76,9 @@ func NewGcsFSFromClientWithSeparator(ctx context.Context, client *storage.Client
 func (fs *GcsFs) Name() string {
 	return fs.source.Name()
 }
+func (fs *GcsFs) Close() {
+	fs.source.client.Close()
+}
 func (fs *GcsFs) Create(name string) (afero.File, error) {
 	return fs.source.Create(name)
 }

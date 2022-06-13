@@ -35,6 +35,10 @@ func New(client *sftp.Client) afero.Fs {
 
 func (s Fs) Name() string { return "sftpfs" }
 
+func (s Fs) Close() {
+	s.client.Close()
+}
+
 func (s Fs) Create(name string) (afero.File, error) {
 	return FileCreate(s.client, name)
 }

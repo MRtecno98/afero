@@ -291,6 +291,11 @@ func (u *CacheOnReadFs) Name() string {
 	return "CacheOnReadFs"
 }
 
+func (u *CacheOnReadFs) Close() {
+	u.base.Close()
+	u.layer.Close()
+}
+
 func (u *CacheOnReadFs) MkdirAll(name string, perm os.FileMode) error {
 	err := u.base.MkdirAll(name, perm)
 	if err != nil {
