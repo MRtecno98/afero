@@ -10,17 +10,25 @@ import (
 )
 
 func Resolve(url *url.URL) (afero.Fs, error) {
+	var arg []string = make([]string, 0, 5)
+
 	usr := url.User.Username()
 	if usr != "" {
 		usr += "@"
 	}
 
+	arg = append(arg, usr+url.Hostname())
+
 	port := url.Port()
 	if port != "" {
-		port = "-p" + port
+		arg = append(arg, "-p", port)
 	}
 
-	cmd := exec.Command("ssh", usr+url.Hostname(), port, "-s", "sftp")
+	arg = append(arg, "-s", "sftp")
+
+	// log.Print("ssh", arg, len(arg))
+
+	cmd := exec.Command("ssh", arg...)
 
 	cmd.Stderr = os.Stderr
 
