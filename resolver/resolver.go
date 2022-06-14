@@ -13,19 +13,27 @@ var protocols = map[string]func(*url.URL) (afero.Fs, error){
 		return afero.NewMemMapFs(), nil
 	},
 
+	"file": func(u *url.URL) (afero.Fs, error) {
+		return afero.NewBasePathFs(afero.NewOsFs(), u.Path), nil
+	},
+
 	"sftp": sftpfs.Resolve,
 	"ssh":  sftpfs.Resolve,
 }
 
+func init() {
+	protocols[""] = protocols["file"] // No scheme: Default protocol
+}
+
 func OpenUrl(u string) (afero.Fs, error) {
-	urlparse, err := url.Parse(u)
+	url, err := url.Parse(u)
 
 	if err != nil {
 		return nil, err
 	}
 
-	if proto, ok := protocols[urlparse.Scheme]; ok {
-		return proto(urlparse)
+	if proto, ok := protocols[url.Scheme]; ok {
+		return proto(url)
 	} else {
 		return nil, errors.New("protocol not implemented")
 	}
