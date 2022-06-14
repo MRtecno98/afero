@@ -1,6 +1,6 @@
 module github.com/MRtecno98/afero
 
-replace github.com/spf13/afero => github.com/MRtecno98/afero v1.9.0
+replace github.com/spf13/afero => ./
 
 require (
 	cloud.google.com/go/storage v1.22.1
