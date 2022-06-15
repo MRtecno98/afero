@@ -5,8 +5,8 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/MRtecno98/afero"
 	"github.com/pkg/sftp"
-	"github.com/spf13/afero"
 )
 
 func Resolve(url *url.URL) (afero.Fs, error) {

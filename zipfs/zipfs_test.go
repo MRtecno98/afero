@@ -1,7 +1,7 @@
 package zipfs
 
 import (
-	"github.com/spf13/afero"
+	"github.com/MRtecno98/afero"
 
 	"archive/zip"
 	"path/filepath"

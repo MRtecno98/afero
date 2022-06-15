@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net/url"
 
+	"github.com/MRtecno98/afero"
 	"github.com/MRtecno98/afero/sftpfs"
-	"github.com/spf13/afero"
 )
 
 var protocols = map[string]func(*url.URL) (afero.Fs, error){
