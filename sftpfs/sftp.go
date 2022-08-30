@@ -15,11 +15,16 @@ package sftpfs
 
 import (
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/MRtecno98/afero"
 	"github.com/pkg/sftp"
 )
+
+func adjpath(path string) string {
+	return filepath.ToSlash(path)
+}
 
 // Fs is a afero.Fs implementation that uses functions provided by the sftp package.
 //
@@ -40,10 +45,11 @@ func (s Fs) Close() {
 }
 
 func (s Fs) Create(name string) (afero.File, error) {
-	return FileCreate(s.client, name)
+	return FileCreate(s.client, adjpath(name))
 }
 
 func (s Fs) Mkdir(name string, perm os.FileMode) error {
+	name = adjpath(name)
 	err := s.client.Mkdir(name)
 	if err != nil {
 		return err
@@ -52,6 +58,7 @@ func (s Fs) Mkdir(name string, perm os.FileMode) error {
 }
 
 func (s Fs) MkdirAll(path string, perm os.FileMode) error {
+	path = adjpath(path)
 	// Fast path: if we can tell whether path is a directory or file, stop with success or error.
 	dir, err := s.Stat(path)
 	if err == nil {
@@ -95,12 +102,13 @@ func (s Fs) MkdirAll(path string, perm os.FileMode) error {
 }
 
 func (s Fs) Open(name string) (afero.File, error) {
-	return FileOpen(s.client, name)
+	return FileOpen(s.client, adjpath(name))
 }
 
 // OpenFile calls the OpenFile method on the SSHFS connection. The mode argument
 // is ignored because it's ignored by the github.com/pkg/sftp implementation.
 func (s Fs) OpenFile(name string, flag int, perm os.FileMode) (afero.File, error) {
+	name = adjpath(name)
 	sshfsFile, err := s.client.OpenFile(name, flag)
 	if err != nil {
 		return nil, err
@@ -110,7 +118,7 @@ func (s Fs) OpenFile(name string, flag int, perm os.FileMode) (afero.File, error
 }
 
 func (s Fs) Remove(name string) error {
-	return s.client.Remove(name)
+	return s.client.Remove(adjpath(name))
 }
 
 func (s Fs) RemoveAll(path string) error {
@@ -120,25 +128,25 @@ func (s Fs) RemoveAll(path string) error {
 }
 
 func (s Fs) Rename(oldname, newname string) error {
-	return s.client.Rename(oldname, newname)
+	return s.client.Rename(adjpath(oldname), adjpath(newname))
 }
 
 func (s Fs) Stat(name string) (os.FileInfo, error) {
-	return s.client.Stat(name)
+	return s.client.Stat(adjpath(name))
 }
 
 func (s Fs) Lstat(p string) (os.FileInfo, error) {
-	return s.client.Lstat(p)
+	return s.client.Lstat(adjpath(p))
 }
 
 func (s Fs) Chmod(name string, mode os.FileMode) error {
-	return s.client.Chmod(name, mode)
+	return s.client.Chmod(adjpath(name), mode)
 }
 
 func (s Fs) Chown(name string, uid, gid int) error {
-	return s.client.Chown(name, uid, gid)
+	return s.client.Chown(adjpath(name), uid, gid)
 }
 
 func (s Fs) Chtimes(name string, atime time.Time, mtime time.Time) error {
-	return s.client.Chtimes(name, atime, mtime)
+	return s.client.Chtimes(adjpath(name), atime, mtime)
 }
