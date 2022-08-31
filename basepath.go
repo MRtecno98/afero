@@ -57,6 +57,9 @@ func (b *BasePathFs) RealPath(name string) (path string, err error) {
 	}
 
 	bpath := filepath.Clean(b.path)
+	if bpath == "." {
+		bpath = ""
+	}
 	path = filepath.Clean(filepath.Join(bpath, name))
 	if !strings.HasPrefix(path, bpath) {
 		return name, os.ErrNotExist
