@@ -40,6 +40,11 @@ func OpenUrl(u string) (afero.Fs, error) {
 		return nil, err
 	}
 
+	if runtime.GOOS == "windows" && len(url.Scheme) == 1 && url.Host == "" {
+		// Drive letter mismatched with URL scheme, forcing explicit
+		return OpenUrl("file:///" + u)
+	}
+
 	if proto, ok := protocols[url.Scheme]; ok {
 		return proto(url)
 	} else {
