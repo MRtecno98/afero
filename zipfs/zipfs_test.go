@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"reflect"
 	"testing"
+
+	"github.com/spf13/afero"
 )
 
 func TestZipFS(t *testing.T) {
