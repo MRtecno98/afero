@@ -3,6 +3,7 @@ package resolver
 import (
 	"errors"
 	"net/url"
+	"path/filepath"
 	"runtime"
 	"strings"
 
@@ -22,7 +23,12 @@ var protocols = map[string]func(*url.URL) (afero.Fs, error){
 			path = strings.TrimLeft(path, "\\")
 		}
 
-		return afero.NewBasePathFs(afero.NewOsFs(), path), nil
+		abs, err := filepath.Abs(path)
+		if err != nil {
+			return nil, err
+		}
+
+		return afero.NewBasePathFs(afero.NewOsFs(), abs), nil
 	},
 
 	"sftp": sftpfs.Resolve,
