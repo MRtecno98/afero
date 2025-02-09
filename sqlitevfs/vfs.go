@@ -75,14 +75,11 @@ func (a *AferoVFS) Delete(name string, dirSync bool) error {
 }
 
 func (a *AferoVFS) Access(name string, flags vfs.AccessFlag) (bool, error) {
-	var res bool = true
 	if flags == vfs.AccessExists {
 		exists, err := a.Fs.Exists(name)
-		if err != nil {
+		if err != nil || !exists {
 			return false, err
 		}
-
-		res = res || exists
 	}
 
 	info, err := a.Fs.Stat(name)
@@ -95,6 +92,7 @@ func (a *AferoVFS) Access(name string, flags vfs.AccessFlag) (bool, error) {
 		}
 	}
 
+	var res bool = true
 	switch flags {
 	case vfs.AccessReadWrite:
 		res = res && info.Mode().Perm()&0600 != 0
