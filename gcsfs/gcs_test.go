@@ -17,11 +17,11 @@ import (
 	"syscall"
 	"testing"
 
+	"cloud.google.com/go/storage"
 	"golang.org/x/oauth2/google"
 
-	"cloud.google.com/go/storage"
-	"github.com/googleapis/google-cloud-go-testing/storage/stiface"
 	"github.com/MRtecno98/afero"
+	"github.com/MRtecno98/afero/gcsfs/internal/stiface"
 )
 
 const (

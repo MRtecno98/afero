@@ -25,7 +25,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/googleapis/google-cloud-go-testing/storage/stiface"
+	"github.com/MRtecno98/afero/gcsfs/internal/stiface"
 )
 
 const (

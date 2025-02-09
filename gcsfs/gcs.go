@@ -22,10 +22,10 @@ import (
 	"time"
 
 	"cloud.google.com/go/storage"
-	"github.com/MRtecno98/afero"
-	"github.com/googleapis/google-cloud-go-testing/storage/stiface"
-
 	"google.golang.org/api/option"
+
+	"github.com/MRtecno98/afero"
+	"github.com/MRtecno98/afero/gcsfs/internal/stiface"
 )
 
 type GcsFs struct {
