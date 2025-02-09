@@ -23,6 +23,46 @@ package as it provides an additional abstraction that makes it easy to use a
 memory backed file system during testing. It also adds support for the http
 filesystem for full interoperability.
 
+## About this fork
+The main two features added by this fork are filesystem URLs parsing and
+a SQLite VFS compatibility layer to use Afero filesystems with SQLite.
+
+```go
+import (
+	"github.com/spf13/afero/resolver"
+)
+
+// This spawns a new ssh process in the background and returns an Afero sftpfs
+fs, err := resolver.OpenUrl("ssh://user:password@host:port/path") 
+
+fs, err := resolver.OpenUrl("mem://") // Creates an instance of MemFS
+
+// BasepathFS wrapping an OsFS, the url protocol here is optional
+fs, err := resolver.OpenUrl("file:///abc/defg")
+```
+
+```go
+import (
+	"database/sql"
+	"github.com/spf13/afero/sqlitevfs"
+)
+
+var fs afero.Fs // Afero filesystem
+
+// Register the filesystem as a VFS
+sqlitevfs.RegisterVFS("myfs", fs)
+
+// Now we can use it to open an sqlite file from it
+// The db url format is dictated by the sqlite3 driver
+db, err := sql.Open("sqlite3", "file:db.sqlite?vfs=myfs")
+if err != nil {
+	return err
+}
+
+// You can also open multiple database files from the same VFS
+```
+
+Below is the rest of the README from the upstream repository.
 
 ## Afero Features
 
